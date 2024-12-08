@@ -22,11 +22,12 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - uses: docker/metadata-action@v5
         id: metadata
-        with:
-          images: ghcr.io/${{ github.repository }}
       - uses: docker/setup-buildx-action@v3
       - uses: docker/bake-action@v5
+        env:
+          TAG_BASE: ghcr.io/${{ github.repository }}
         with:
+          push: true
           files: |
             ./docker-bake.hcl
             ${{ steps.metadata.outputs.bake-file }}
